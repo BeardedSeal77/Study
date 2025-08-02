@@ -1,0 +1,84 @@
+# JavaScript Interview Prep - 4 Notebooks
+
+## 📝 Notebook 1: JavaScript Fundamentals
+**Focus: Core language concepts**
+
+### Topics to Cover:
+- **Variable declarations** - `var`, `let`, `const` differences
+- **Hoisting basics** - what gets moved where
+- **Arrow functions vs regular functions** - syntax and behavior differences
+- **Template literals** - `Hello ${name}!` vs string concatenation
+- **Truthy/falsy values** - what evaluates to true/false in conditionals
+
+### Practice Examples:
+- Variable scoping examples
+- Function declaration vs expression
+- String manipulation comparisons
+
+---
+
+## 🔧 Notebook 2: Data Manipulation & Array Methods
+**Focus: Working with data structures**
+
+### Topics to Cover:
+- **Array methods** - `.map()`, `.filter()`, `.reduce()`, `.forEach()`
+- **Object manipulation** - accessing, modifying properties
+- **Object destructuring** - `const { name, age } = person`
+- **Spread operator** - `...array`, `...object`
+- **Simple array/object manipulation** - common patterns
+
+### Practice Examples:
+- Transform arrays of data (like you'd do with pandas)
+- Filter datasets
+- Extract specific fields from objects
+- Combine/merge data structures
+
+---
+
+## 🧠 Notebook 3: Algorithms & Logic
+**Focus: Problem-solving patterns**
+
+### Topics to Cover:
+- **Loops** - `for`, `while`, `for...of`, `for...in`
+- **Conditionals** - `if/else`, `switch`, ternary operators
+- **Basic data structures** - arrays, objects, nested structures
+- **Simple algorithmic problems** - sorting, searching, counting
+- **Function analysis** - reading and explaining what code does
+
+### Practice Examples:
+- Classic problems (FizzBuzz, palindromes, etc.)
+- Data processing tasks
+- Code reading exercises
+
+---
+
+## ⚡ Notebook 4: Async & Advanced Concepts
+**Focus: Modern JavaScript features**
+
+### Topics to Cover:
+- **Promises** - basic `.then()`, `.catch()`
+- **async/await** - modern async syntax
+- **Basic closures** - functions returning functions
+- **Callback functions** - passing functions as arguments
+- **Error handling** - try/catch with async code
+
+### Practice Examples:
+- API call simulations
+- Delayed operations
+- Event handling patterns
+- Function composition
+
+---
+
+## 🎯 Study Strategy:
+
+1. **Day 1-2:** Notebooks 1 & 2 (fundamentals + data manipulation)
+2. **Day 3:** Notebook 3 (algorithms - most important for interviews)
+3. **Day 4:** Notebook 4 (async concepts)
+4. **Day 5:** Review and practice explaining code snippets aloud
+
+## 💡 For Each Example:
+- Write the JavaScript solution
+- Add Python equivalent in comments
+- Explain what the code does in plain English
+- Note any "gotchas" or common mistakes
