@@ -1,0 +1,81 @@
+Based on my analysis of your current JavaScript and TypeScript study materials and the common interview topics, here are the key areas that would be valuable to add or strengthen:
+
+TypeScript-Specific Gaps:
+
+Advanced TypeScript Features (commonly tested):
+
+Decorators and their usage in logging/validation scenarios TestGorillaGeeksforGeeks
+Type assertions (as keyword) and when to use them vs other type-checking mechanisms TestGorillaInterviewBit
+Conditional types and their practical applications Top TypeScript Interview Questions (2025) - InterviewBit
+Utility types (Partial, Pick, Omit, Record, etc.) TuringInterviewBit
+
+
+Object-Oriented TypeScript:
+
+Abstract classes and their relationship to interfaces 100 TypeScript Interview Questions And Answers For 2025
+Access modifiers (public, private, protected) in detail Top TypeScript Interview Questions (2025) - InterviewBit
+Generic classes and inheritance patterns
+
+
+Type System Deep Dive:
+
+unknown vs any types and when to use each ArcInterviewBit
+Union types and intersection types Top TypeScript Interview Questions (2025) - InterviewBit
+Type guards and narrowing 50+ TypeScript Interview Questions and Answers (2025) - GeeksforGeeks
+Type inference and best common type algorithm GitHub - Devinterview-io/typescript-interview-questions: 🟣 Typescript interview questions and answers to help you prepare for your next technical interview in 2025.
+
+
+
+JavaScript Areas to Strengthen:
+
+ES6+ Features (heavily tested):
+
+Destructuring assignment (array and object)
+Rest/spread operators in various contexts
+Map, Set, WeakMap, WeakSet
+Symbol primitive type
+
+
+Advanced Function Concepts:
+
+Function binding, call, and apply methods TypeScript Interview Questions + Answers (With Code Examples) | Zero To Mastery
+Generator functions and iterators
+Function currying and partial application
+
+
+Module System:
+
+Import/export statements
+Default vs named exports
+Dynamic imports
+
+
+Error Handling:
+
+Custom error types
+Error propagation patterns
+Try/catch with async/await best practices
+
+
+
+Interview-Focused Practice Areas:
+
+Code Reading & Explanation Skills (key for your EPI-USE interview):
+
+Practice explaining what code snippets do in plain English
+Common gotchas and edge cases
+Performance implications of different approaches
+
+
+Compilation & Tooling:
+
+How TypeScript compilation works with Visual Studio Code 56 TypeScript Interview Questions - TestGorilla
+tsconfig.json configuration
+Understanding .ts vs .tsx file extensions
+
+
+Real-world Scenarios:
+
+API integration patterns TestGorillaTestGorilla
+Form validation with TypeScript
+State management patterns
