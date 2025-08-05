@@ -1,0 +1,1457 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "# JavaScript and TypeScript Interview Questions for Graduate Software Engineering Programs\n",
+        "\n",
+        "## Table of Contents\n",
+        "\n",
+        "1. [Introduction & Overview](#1-introduction--overview)\n",
+        "2. [Code Reading and Explanation Exercises](#2-code-reading-and-explanation-exercises)\n",
+        "   - 2.1 [Variable Hoisting and Scope](#21-variable-hoisting-and-scope)\n",
+        "   - 2.2 [Closure and Loop Interactions](#22-closure-and-loop-interactions)\n",
+        "   - 2.3 [Execution Order and Asynchronous Behavior](#23-execution-order-and-asynchronous-behavior)\n",
+        "3. [Common JavaScript Gotchas and Edge Cases](#3-common-javascript-gotchas-and-edge-cases)\n",
+        "   - 3.1 [Equality Comparison Tricks](#31-equality-comparison-tricks)\n",
+        "   - 3.2 [String and Number Coercion](#32-string-and-number-coercion)\n",
+        "   - 3.3 [NaN Behavior](#33-nan-behavior)\n",
+        "   - 3.4 [Automatic Semicolon Insertion](#34-automatic-semicolon-insertion)\n",
+        "4. [TypeScript Type System Questions](#4-typescript-type-system-questions)\n",
+        "   - 4.1 [Interface vs Type Declarations](#41-interface-vs-type-declarations)\n",
+        "   - 4.2 [Method Overloading](#42-method-overloading)\n",
+        "5. [Typical 15-minute Code Interpretation Exercises](#5-typical-15-minute-code-interpretation-exercises)\n",
+        "   - 5.1 [String Manipulation Challenges](#51-string-manipulation-challenges)\n",
+        "   - 5.2 [Basic Logic Problems](#52-basic-logic-problems)\n",
+        "   - 5.3 [Object Manipulation Exercises](#53-object-manipulation-exercises)\n",
+        "6. [Practical Code Snippets Over Complex Algorithms](#6-practical-code-snippets-over-complex-algorithms)\n",
+        "   - 6.1 [Debugging Exercises](#61-debugging-exercises)\n",
+        "   - 6.2 [API Integration Patterns](#62-api-integration-patterns)\n",
+        "   - 6.3 [Data Transformation Scenarios](#63-data-transformation-scenarios)\n",
+        "7. [Interview Preparation Strategy](#7-interview-preparation-strategy)\n",
+        "8. [Practice Exercises](#8-practice-exercises)\n",
+        "9. [Conclusion](#9-conclusion)\n",
+        "\n",
+        "---"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## 1. Introduction & Overview\n",
+        "\n",
+        "Software engineering graduate programs increasingly emphasize practical coding skills through **15-minute code interpretation exercises** that test foundational understanding rather than algorithmic complexity. These exercises, commonly used by enterprise companies like EPI-USE and similar SAP partners, focus on:\n",
+        "\n",
+        "- **JavaScript gotchas and edge cases**\n",
+        "- **TypeScript type system knowledge**\n",
+        "- **Real-world problem-solving patterns**\n",
+        "\n",
+        "### Interview Format\n",
+        "- **Total Duration**: 30 minutes\n",
+        "- **First 15 minutes**: Interpersonal and theoretical questions\n",
+        "- **Second 15 minutes**: JavaScript/TypeScript code snippet interpretation\n",
+        "- **Focus**: Explaining code functionality clearly\n",
+        "\n",
+        "### Key Success Factors\n",
+        "- Master core concepts over advanced patterns\n",
+        "- Practice clear communication\n",
+        "- Demonstrate adaptability to feedback\n",
+        "- Show systematic problem-solving approach"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## 2. Code Reading and Explanation Exercises\n",
+        "\n",
+        "Code reading exercises follow a structured **15-minute format**:\n",
+        "- **5 minutes**: Problem analysis and solution development\n",
+        "- **10 minutes**: Discussion with the interviewer\n",
+        "\n",
+        "These exercises prioritize **communication skills** and **systematic thinking** over perfect solutions."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 2.1 Variable Hoisting and Scope"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Classic hoisting example - What does this print?\n",
+        "var x = 1;\n",
+        "function test() {\n",
+        "    console.log(x);  // What prints here?\n",
+        "    if (false) {\n",
+        "        var x = 2;\n",
+        "    }\n",
+        "}\n",
+        "test();\n",
+        "\n",
+        "// Answer: undefined\n",
+        "// Explanation: JavaScript hoists the 'var x' declaration within the function scope,\n",
+        "// creating a local variable that shadows the global one. \n",
+        "// The function is interpreted as having 'var x;' at the top."
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "**Key Learning**: This tests understanding of JavaScript's execution context and variable lifecycle."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 2.2 Closure and Loop Interactions"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Closure and loop challenge\n",
+        "function createFunctions() {\n",
+        "    var result = [];\n",
+        "    for (var i = 0; i < 3; i++) {\n",
+        "        result[i] = function() {\n",
+        "            return i;\n",
+        "        };\n",
+        "    }\n",
+        "    return result;\n",
+        "}\n",
+        "var funcs = createFunctions();\n",
+        "console.log(funcs[0]()); // What does this print?\n",
+        "console.log(funcs[1]());\n",
+        "console.log(funcs[2]());\n",
+        "\n",
+        "// Answer: All functions return 3\n",
+        "// Explanation: All functions reference the same variable 'i' which equals 3 after loop completion\n",
+        "\n",
+        "// Solution 1: Using let instead of var\n",
+        "function createFunctionsFixed1() {\n",
+        "    var result = [];\n",
+        "    for (let i = 0; i < 3; i++) {\n",
+        "        result[i] = function() {\n",
+        "            return i;\n",
+        "        };\n",
+        "    }\n",
+        "    return result;\n",
+        "}\n",
+        "\n",
+        "// Solution 2: Using IIFE (Immediately Invoked Function Expression)\n",
+        "function createFunctionsFixed2() {\n",
+        "    var result = [];\n",
+        "    for (var i = 0; i < 3; i++) {\n",
+        "        result[i] = (function(index) {\n",
+        "            return function() {\n",
+        "                return index;\n",
+        "            };\n",
+        "        })(i);\n",
+        "    }\n",
+        "    return result;\n",
+        "}"
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "**Key Learning**: Tests closure understanding and the difference between `var` and `let` scoping."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 2.3 Execution Order and Asynchronous Behavior"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Event loop and task queue challenge\n",
+        "console.log('1');\n",
+        "setTimeout(() => console.log('2'), 0);\n",
+        "Promise.resolve().then(() => console.log('3'));\n",
+        "console.log('4');\n",
+        "\n",
+        "// Output sequence: 1, 4, 3, 2\n",
+        "// Explanation:\n",
+        "// 1. Synchronous code executes first (1, 4)\n",
+        "// 2. Microtasks (Promises) execute next (3)\n",
+        "// 3. Macrotasks (setTimeout) execute last (2)"
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "**Key Learning**: Demonstrates understanding of JavaScript's event loop and task queue priorities."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## 3. Common JavaScript Gotchas and Edge Cases\n",
+        "\n",
+        "JavaScript's type coercion system creates numerous gotchas that interviewers frequently use to test depth of understanding."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 3.1 Equality Comparison Tricks"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Type coercion gotchas\n",
+        "console.log(false == '0');        // true\n",
+        "console.log(0 == false);         // true\n",
+        "console.log('' == 0);            // true\n",
+        "console.log([] == '');           // true\n",
+        "console.log('1' == true);        // true\n",
+        "console.log([] == []);           // false (different objects)\n",
+        "\n",
+        "// Best practice: Use strict equality\n",
+        "console.log(false === '0');       // false\n",
+        "console.log(0 === false);        // false\n",
+        "console.log('' === 0);           // false\n",
+        "console.log([] === []);          // false\n",
+        "console.log('1' === true);       // false"
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "**Key Learning**: `==` triggers complex coercion rules, while object comparisons always check reference equality. Understanding these patterns indicates practical debugging experience."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 3.2 String and Number Coercion"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Arithmetic operations with strings and numbers\n",
+        "console.log(1 + \"2\" + \"2\");      // \"122\"\n",
+        "console.log(1 + +\"2\" + \"2\");     // \"32\" (unary + converts \"2\" to number)\n",
+        "console.log(\"number\" + 15 + 3);  // \"number153\"\n",
+        "console.log(15 + 3 + \"number\");  // \"18number\"\n",
+        "\n",
+        "// Explanation:\n",
+        "// - The unary plus operator (+) forces numeric conversion\n",
+        "// - Addition context determines whether operations are arithmetic or string concatenation\n",
+        "// - Left-to-right evaluation with context-sensitive behavior"
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "**Key Learning**: These questions assess understanding of operator precedence and type conversion rules."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 3.3 NaN Behavior"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// NaN quirks\n",
+        "console.log(NaN === NaN);        // false\n",
+        "console.log(typeof NaN);         // \"number\"\n",
+        "console.log(isNaN(\"string\"));    // true\n",
+        "console.log(isNaN(\"\"));          // false (empty string converts to 0)\n",
+        "\n",
+        "// Modern best practice\n",
+        "console.log(Number.isNaN(NaN));     // true\n",
+        "console.log(Number.isNaN(\"string\")); // false (no type coercion)\n",
+        "\n",
+        "// Explanation:\n",
+        "// - NaN is the only value in JavaScript that doesn't equal itself\n",
+        "// - isNaN() performs type coercion before checking\n",
+        "// - Number.isNaN() does strict NaN checking without coercion"
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 3.4 Automatic Semicolon Insertion"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// ASI creates subtle bugs\n",
+        "function increment(num) {\n",
+        "    return\n",
+        "    ++num; // This line never executes\n",
+        "}\n",
+        "console.log(increment(3)); // Returns undefined\n",
+        "\n",
+        "// JavaScript interprets this as:\n",
+        "function incrementActual(num) {\n",
+        "    return; // Automatic semicolon inserted here\n",
+        "    ++num;  // Unreachable code\n",
+        "}\n",
+        "\n",
+        "// Correct version:\n",
+        "function incrementFixed(num) {\n",
+        "    return ++num;\n",
+        "}"
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "**Key Learning**: Understanding ASI helps identify why certain code doesn't behave as expected and reinforces the importance of consistent semicolon usage."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## 4. TypeScript Type System Questions\n",
+        "\n",
+        "TypeScript interviews for graduate programs focus on practical type system understanding rather than advanced type theory."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 4.1 Interface vs Type Declarations"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Interface - can be merged and extended\n",
+        "interface User {\n",
+        "    name: string;\n",
+        "}\n",
+        "interface User {\n",
+        "    age: number;  // Merges with above\n",
+        "}\n",
+        "\n",
+        "// Type - supports unions and complex operations\n",
+        "type StringOrNumber = string | number;\n",
+        "type UserKeys = keyof User; // \"name\" | \"age\"\n",
+        "\n",
+        "// When to use what:\n",
+        "// - Interfaces: Better for object shapes and API contracts (support declaration merging)\n",
+        "// - Types: Better for complex type operations and unions\n",
+        "\n",
+        "// Example usage\n",
+        "const user: User = {\n",
+        "    name: \"John\",\n",
+        "    age: 30\n",
+        "};\n",
+        "\n",
+        "const value: StringOrNumber = \"hello\"; // or 42\n",
+        "const key: UserKeys = \"name\"; // or \"age\""
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "**Key Learning**: This distinction becomes crucial when designing scalable TypeScript applications."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 4.2 Method Overloading"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Method overloading in TypeScript\n",
+        "class Canvas {\n",
+        "    // Overload signatures\n",
+        "    draw(): void;\n",
+        "    draw(x: number, y: number): void;\n",
+        "    \n",
+        "    // Implementation signature\n",
+        "    draw(x?: number, y?: number): void {\n",
+        "        if (x !== undefined && y !== undefined) {\n",
+        "            console.log(`Drawing at (${x}, ${y})`);\n",
+        "        } else {\n",
+        "            console.log(\"Drawing at origin\");\n",
+        "        }\n",
+        "    }\n",
+        "}\n",
+        "\n",
+        "// Usage\n",
+        "const canvas = new Canvas();\n",
+        "canvas.draw();        // \"Drawing at origin\"\n",
+        "canvas.draw(10, 20);  // \"Drawing at (10, 20)\""
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "**Key Learning**: Method overloading provides flexible APIs while maintaining type safety, essential for library and framework development."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 4.3 Generic Type Constraints"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Generic type constraints test understanding of type safety and reusability\n",
+        "function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {\n",
+        "    return obj[key];\n",
+        "}\n",
+        "\n",
+        "const person = { name: \"John\", age: 30 };\n",
+        "const name = getProperty(person, \"name\"); // Type: string\n",
+        "const invalid = getProperty(person, \"invalid\"); // TypeScript error\n",
+        "\n",
+        "// This pattern demonstrates how generics maintain type relationships\n",
+        "// while providing flexibility. The keyof constraint ensures only valid\n",
+        "// property names are accepted, preventing runtime errors through compile-time checking."
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 4.4 Union and Intersection Types"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Union and intersection types solve different composition problems\n",
+        "\n",
+        "// Union - value can be ONE of the types\n",
+        "type Status = \"loading\" | \"success\" | \"error\";\n",
+        "\n",
+        "// Intersection - value must have ALL properties\n",
+        "type User = { name: string };\n",
+        "type Admin = { adminLevel: number };\n",
+        "type AdminUser = User & Admin;  // Must have both name and adminLevel\n",
+        "\n",
+        "// Discriminated unions enable type-safe pattern matching\n",
+        "type ApiResponse = \n",
+        "  | { status: 'success'; data: any }\n",
+        "  | { status: 'error'; message: string }\n",
+        "  | { status: 'loading' };\n",
+        "\n",
+        "function handleResponse(response: ApiResponse) {\n",
+        "    switch (response.status) {\n",
+        "        case 'success':\n",
+        "            console.log(response.data); // TypeScript knows data exists\n",
+        "            break;\n",
+        "        case 'error':\n",
+        "            console.log(response.message); // TypeScript knows message exists\n",
+        "            break;\n",
+        "    }\n",
+        "}\n",
+        "\n",
+        "// This pattern eliminates entire classes of runtime errors by making\n",
+        "// impossible states unrepresentable in the type system"
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Array Manipulation and Data Processing Challenges\n",
+        "\n",
+        "Array method selection and chaining represents core JavaScript competency. **Map, filter, and reduce serve distinct purposes** that graduate-level candidates must understand:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "const employees = [\n",
+        "    { name: \"John\", salary: 50000, department: \"IT\" },\n",
+        "    { name: \"Jane\", salary: 60000, department: \"HR\" },\n",
+        "    { name: \"Bob\", salary: 55000, department: \"IT\" }\n",
+        "];\n",
+        "\n",
+        "// Transform - use map\n",
+        "const withBonuses = employees.map(emp => ({\n",
+        "    ...emp,\n",
+        "    bonus: emp.salary * 0.1\n",
+        "}));\n",
+        "\n",
+        "// Filter - use filter\n",
+        "const itEmployees = employees.filter(emp => emp.department === \"IT\");\n",
+        "\n",
+        "// Aggregate - use reduce\n",
+        "const totalSalary = employees.reduce((sum, emp) => sum + emp.salary, 0);"
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "**Complex data transformations** often require method chaining:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "const departmentAverages = employees\n",
+        "    .reduce((acc, emp) => {\n",
+        "        if (!acc[emp.department]) {\n",
+        "            acc[emp.department] = { total: 0, count: 0 };\n",
+        "        }\n",
+        "        acc[emp.department].total += emp.salary;\n",
+        "        acc[emp.department].count++;\n",
+        "        return acc;\n",
+        "    }, {})\n",
+        "    .map(([dept, stats]) => ({\n",
+        "        department: dept,\n",
+        "        average: stats.total / stats.count\n",
+        "    }));\n",
+        "\n",
+        "// This pattern demonstrates functional programming principles applied to\n",
+        "// real-world data processing scenarios"
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "**Nested array flattening and counting** tests understanding of array manipulation:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "const nested = [[\"a\", \"b\"], [\"c\", \"d\"], [\"d\", \"e\"]];\n",
+        "\n",
+        "const letterCounts = nested\n",
+        "    .flat()\n",
+        "    .reduce((counts, letter) => {\n",
+        "        counts[letter] = (counts[letter] || 0) + 1;\n",
+        "        return counts;\n",
+        "    }, {});\n",
+        "// Result: {a: 1, b: 1, c: 1, d: 2, e: 1}\n",
+        "\n",
+        "// The .flat() method simplifies nested array processing, while the reduce pattern\n",
+        "// handles frequency counting. These operations appear frequently in real applications\n",
+        "// for data aggregation and reporting."
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Async/Promise Related Questions\n",
+        "\n",
+        "Asynchronous JavaScript comprehension separates competent developers from beginners. **Sequential versus parallel execution** represents the most common pitfall:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Inefficient - sequential execution (9 seconds total)\n",
+        "async function slow() {\n",
+        "    const a = await getValueA(); // 2 seconds\n",
+        "    const b = await getValueB(); // 4 seconds\n",
+        "    const c = await getValueC(); // 3 seconds\n",
+        "    return a + b + c;\n",
+        "}\n",
+        "\n",
+        "// Efficient - parallel execution (4 seconds total)\n",
+        "async function fast() {\n",
+        "    const [a, b, c] = await Promise.all([\n",
+        "        getValueA(),\n",
+        "        getValueB(),\n",
+        "        getValueC()\n",
+        "    ]);\n",
+        "    return a + b + c;\n",
+        "}\n",
+        "\n",
+        "// Understanding when operations can run in parallel versus when they must be\n",
+        "// sequential directly impacts application performance and user experience."
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "**Async callback patterns in array methods** create subtle bugs:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "const numbers = [1, 2, 3];\n",
+        "\n",
+        "// This doesn't work as expected\n",
+        "const results = numbers.map(async (num) => {\n",
+        "    return await processNumber(num);\n",
+        "});\n",
+        "console.log(results); // [Promise, Promise, Promise]\n",
+        "\n",
+        "// Correct approach\n",
+        "const results = await Promise.all(\n",
+        "    numbers.map(async (num) => await processNumber(num))\n",
+        ");\n",
+        "\n",
+        "// Array methods don't automatically handle promises, requiring explicit\n",
+        "// Promise.all() wrapping. This pattern appears frequently when processing\n",
+        "// collections asynchronously."
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "**Error handling patterns** in async code require specific approaches:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "async function fetchWithRetry(url, maxRetries = 3) {\n",
+        "    for (let i = 0; i < maxRetries; i++) {\n",
+        "        try {\n",
+        "            const response = await fetch(url);\n",
+        "            if (response.ok) return response;\n",
+        "            throw new Error(`HTTP ${response.status}`);\n",
+        "        } catch (error) {\n",
+        "            if (i === maxRetries - 1) throw error;\n",
+        "            // Exponential backoff\n",
+        "            await new Promise(resolve => \n",
+        "                setTimeout(resolve, Math.pow(2, i) * 1000)\n",
+        "            );\n",
+        "        }\n",
+        "    }\n",
+        "}\n",
+        "\n",
+        "// This demonstrates sophisticated error handling with retry logic and\n",
+        "// exponential backoff, patterns commonly required in production applications."
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Object-Oriented Programming Concepts in TypeScript\n",
+        "\n",
+        "TypeScript's class system builds on JavaScript with compile-time type safety. **Access modifiers and inheritance** form the foundation of object-oriented design:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "abstract class Animal {\n",
+        "    protected name: string;\n",
+        "    private age: number;\n",
+        "    \n",
+        "    constructor(name: string, age: number) {\n",
+        "        this.name = name;\n",
+        "        this.age = age;\n",
+        "    }\n",
+        "    \n",
+        "    public getAge(): number {\n",
+        "        return this.age;\n",
+        "    }\n",
+        "    \n",
+        "    abstract makeSound(): void;\n",
+        "}\n",
+        "\n",
+        "class Dog extends Animal {\n",
+        "    private breed: string;\n",
+        "    \n",
+        "    constructor(name: string, age: number, breed: string) {\n",
+        "        super(name, age);\n",
+        "        this.breed = breed;\n",
+        "    }\n",
+        "    \n",
+        "    makeSound(): void {\n",
+        "        console.log(`${this.name} barks!`); // Can access protected member\n",
+        "    }\n",
+        "}\n",
+        "\n",
+        "// Abstract classes enforce implementation contracts while providing shared\n",
+        "// functionality. Protected members enable controlled inheritance hierarchies,\n",
+        "// while private members ensure proper encapsulation."
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "**Interface implementation with method overloading** demonstrates polymorphism:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "interface Drawable {\n",
+        "    draw(): void;\n",
+        "    draw(x: number, y: number): void;\n",
+        "}\n",
+        "\n",
+        "class Circle implements Drawable {\n",
+        "    draw(): void;\n",
+        "    draw(x: number, y: number): void;\n",
+        "    draw(x?: number, y?: number): void {\n",
+        "        if (x !== undefined && y !== undefined) {\n",
+        "            console.log(`Drawing at (${x}, ${y})`);\n",
+        "        } else {\n",
+        "            console.log(\"Drawing at origin\");\n",
+        "        }\n",
+        "    }\n",
+        "}\n",
+        "\n",
+        "// Method overloading provides flexible APIs while maintaining type safety,\n",
+        "// essential for library and framework development."
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## EPI-USE and Enterprise Software Company Examples\n",
+        "\n",
+        "EPI-USE, one of the world's largest independent SAP HR/Payroll specialists with over 3,500 employees across 40+ countries, follows a structured graduate program interview process that reflects broader enterprise software company patterns. **Their 12-month milestone-based program emphasizes both technical skills and business consulting capabilities**, requiring candidates who can bridge technology and client requirements.\n",
+        "\n",
+        "**EPI-USE's assessment process** includes a one-week take-home technical assessment followed by an in-person presentation at their Pretoria office. This format allows candidates to demonstrate both coding competency and communication skills essential for client-facing technical consulting roles.\n",
+        "\n",
+        "**Enterprise software companies typically employ multi-stage processes**: online assessments using platforms like HackerRank or Codility, technical phone screens, multiple coding interviews, and behavioral assessments. **The emphasis shifts from pure algorithmic problem-solving toward practical application development, integration patterns, and scalability considerations**.\n",
+        "\n",
+        "**SAP partner companies and enterprise consultancies** focus on questions around business process automation, ERP system integration, and client solution development. Technical questions often center on RESTful API design, database integration patterns, and security considerations for enterprise-scale applications.\n",
+        "\n",
+        "**Common enterprise-specific JavaScript/TypeScript questions** include error handling strategies for production systems, memory management for long-running applications, module organization for large codebases, and browser compatibility considerations for corporate environments."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## 5. Typical 15-minute Code Interpretation Exercises\n",
+        "\n",
+        "The 15-minute format optimizes for **fundamental understanding over algorithmic complexity**."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 5.1 String Manipulation Challenges"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Move capital letters to front of word\n",
+        "function moveCapitals(str) {\n",
+        "    const capitals = str.split('').filter(char => char === char.toUpperCase());\n",
+        "    const lowercase = str.split('').filter(char => char === char.toLowerCase());\n",
+        "    return capitals.join('') + lowercase.join('');\n",
+        "}\n",
+        "\n",
+        "// Test the function\n",
+        "console.log(moveCapitals(\"hElLo\")); // \"ELhlo\"\n",
+        "console.log(moveCapitals(\"JavaScript\")); // \"JSavacript\"\n",
+        "\n",
+        "// Alternative implementation using reduce\n",
+        "function moveCapitalsOptimized(str) {\n",
+        "    return str.split('').reduce((acc, char) => {\n",
+        "        if (char === char.toUpperCase()) {\n",
+        "            acc.capitals += char;\n",
+        "        } else {\n",
+        "            acc.lowercase += char;\n",
+        "        }\n",
+        "        return acc;\n",
+        "    }, {capitals: '', lowercase: ''});\n",
+        "}"
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 5.2 Basic Logic Problems"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Check if string has equal X's and O's (case insensitive)\n",
+        "function xoEqual(str) {\n",
+        "    const lower = str.toLowerCase();\n",
+        "    const x_count = (lower.match(/x/g) || []).length;\n",
+        "    const o_count = (lower.match(/o/g) || []).length;\n",
+        "    return x_count === o_count;\n",
+        "}\n",
+        "\n",
+        "// Test the function\n",
+        "console.log(xoEqual(\"ooxx\")); // true\n",
+        "console.log(xoEqual(\"xooxx\")); // false\n",
+        "console.log(xoEqual(\"ooxXm\")); // true\n",
+        "console.log(xoEqual(\"zpzpzpp\")); // true (no x's or o's)\n",
+        "\n",
+        "// Alternative implementation\n",
+        "function xoEqualAlternative(str) {\n",
+        "    let xCount = 0, oCount = 0;\n",
+        "    for (let char of str.toLowerCase()) {\n",
+        "        if (char === 'x') xCount++;\n",
+        "        if (char === 'o') oCount++;\n",
+        "    }\n",
+        "    return xCount === oCount;\n",
+        "}"
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 5.3 Object Manipulation Exercises"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Transform array of objects to create summary statistics\n",
+        "function summarizeStudents(students) {\n",
+        "    return students.map(student => ({\n",
+        "        name: student.name,\n",
+        "        average: student.scores.reduce((sum, score) => sum + score, 0) / student.scores.length,\n",
+        "        passed: student.scores.every(score => score >= 60)\n",
+        "    }));\n",
+        "}\n",
+        "\n",
+        "// Test data\n",
+        "const students = [\n",
+        "    { name: \"Alice\", scores: [85, 92, 78, 90] },\n",
+        "    { name: \"Bob\", scores: [55, 62, 58, 48] },\n",
+        "    { name: \"Charlie\", scores: [95, 88, 92, 87] }\n",
+        "];\n",
+        "\n",
+        "console.log(summarizeStudents(students));\n",
+        "// Output:\n",
+        "// [\n",
+        "//   { name: \"Alice\", average: 86.25, passed: true },\n",
+        "//   { name: \"Bob\", average: 55.75, passed: false },\n",
+        "//   { name: \"Charlie\", average: 90.5, passed: true }\n",
+        "// ]"
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "**Key Learning**: Evaluation criteria prioritize communication over perfect solutions. Interviewers assess:\n",
+        "- Systematic problem decomposition\n",
+        "- Clear articulation of thought processes\n",
+        "- Consideration of edge cases\n",
+        "- Adaptability when receiving feedback"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## 6. Practical Code Snippets Over Complex Algorithms\n",
+        "\n",
+        "Modern graduate program interviews emphasize **real-world problem-solving over academic algorithm implementation**."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 6.1 Debugging Exercises"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Find and fix the bug\n",
+        "function calculateTotal(items) {\n",
+        "    let total = 0;\n",
+        "    items.forEach(item => {\n",
+        "        total += item.price * item.quantity;\n",
+        "    });\n",
+        "    return total.toFixed(2); // Bug: Returns string, not number\n",
+        "}\n",
+        "\n",
+        "// Fixed version\n",
+        "function calculateTotalFixed(items) {\n",
+        "    let total = 0;\n",
+        "    items.forEach(item => {\n",
+        "        total += item.price * item.quantity;\n",
+        "    });\n",
+        "    return Math.round(total * 100) / 100; // Returns number with 2 decimal places\n",
+        "    // OR: return parseFloat(total.toFixed(2));\n",
+        "}\n",
+        "\n",
+        "// Test\n",
+        "const items = [{price: 10.5, quantity: 2}, {price: 5.25, quantity: 3}];\n",
+        "console.log(typeof calculateTotal(items));      // \"string\"\n",
+        "console.log(typeof calculateTotalFixed(items)); // \"number\""
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 6.2 API Integration Patterns"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Implement error handling for API calls\n",
+        "async function fetchUserData(userId) {\n",
+        "    try {\n",
+        "        const response = await fetch(`/api/users/${userId}`);\n",
+        "        if (!response.ok) {\n",
+        "            throw new Error(`HTTP ${response.status}: ${response.statusText}`);\n",
+        "        }\n",
+        "        return await response.json();\n",
+        "    } catch (error) {\n",
+        "        console.error('Failed to fetch user data:', error);\n",
+        "        return null; // Return fallback value\n",
+        "    }\n",
+        "}\n",
+        "\n",
+        "// Enhanced version with retry logic\n",
+        "async function fetchUserDataWithRetry(userId, maxRetries = 3) {\n",
+        "    let lastError;\n",
+        "    \n",
+        "    for (let attempt = 1; attempt <= maxRetries; attempt++) {\n",
+        "        try {\n",
+        "            const response = await fetch(`/api/users/${userId}`);\n",
+        "            if (!response.ok) {\n",
+        "                throw new Error(`HTTP ${response.status}: ${response.statusText}`);\n",
+        "            }\n",
+        "            return await response.json();\n",
+        "        } catch (error) {\n",
+        "            lastError = error;\n",
+        "            if (attempt === maxRetries) {\n",
+        "                console.error(`Failed to fetch user data after ${maxRetries} attempts:`, error);\n",
+        "                return null;\n",
+        "            }\n",
+        "            // Wait before retrying (exponential backoff)\n",
+        "            await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));\n",
+        "        }\n",
+        "    }\n",
+        "}"
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 6.3 Data Transformation Scenarios"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Transform API response for frontend consumption\n",
+        "function formatUserProfiles(apiResponse) {\n",
+        "    return apiResponse.users.map(user => ({\n",
+        "        id: user.user_id,\n",
+        "        displayName: `${user.first_name} ${user.last_name}`,\n",
+        "        email: user.email_address,\n",
+        "        isActive: user.status === 'active',\n",
+        "        lastLogin: new Date(user.last_login_timestamp)\n",
+        "    }));\n",
+        "}\n",
+        "\n",
+        "// Example API response\n",
+        "const apiResponse = {\n",
+        "    users: [\n",
+        "        {\n",
+        "            user_id: 1,\n",
+        "            first_name: \"John\",\n",
+        "            last_name: \"Doe\",\n",
+        "            email_address: \"john.doe@example.com\",\n",
+        "            status: \"active\",\n",
+        "            last_login_timestamp: \"2024-01-15T10:30:00Z\"\n",
+        "        },\n",
+        "        {\n",
+        "            user_id: 2,\n",
+        "            first_name: \"Jane\",\n",
+        "            last_name: \"Smith\",\n",
+        "            email_address: \"jane.smith@example.com\",\n",
+        "            status: \"inactive\",\n",
+        "            last_login_timestamp: \"2024-01-10T14:20:00Z\"\n",
+        "        }\n",
+        "    ]\n",
+        "};\n",
+        "\n",
+        "// Test the transformation\n",
+        "console.log(formatUserProfiles(apiResponse));\n",
+        "// Output:\n",
+        "// [\n",
+        "//   {\n",
+        "//     id: 1,\n",
+        "//     displayName: \"John Doe\",\n",
+        "//     email: \"john.doe@example.com\",\n",
+        "//     isActive: true,\n",
+        "//     lastLogin: 2024-01-15T10:30:00.000Z\n",
+        "//   },\n",
+        "//   {\n",
+        "//     id: 2,\n",
+        "//     displayName: \"Jane Smith\",\n", 
+        "//     email: \"jane.smith@example.com\",\n",
+        "//     isActive: false,\n",
+        "//     lastLogin: 2024-01-10T14:20:00.000Z\n",
+        "//   }\n",
+        "// ]\n",
+        "\n",
+        "// Enhanced version with error handling\n",
+        "function formatUserProfilesSafe(apiResponse) {\n",
+        "    if (!apiResponse || !Array.isArray(apiResponse.users)) {\n",
+        "        return [];\n",
+        "    }\n",
+        "    \n",
+        "    return apiResponse.users\n",
+        "        .filter(user => user && user.user_id) // Filter out invalid users\n",
+        "        .map(user => ({\n",
+        "            id: user.user_id,\n",
+        "            displayName: `${user.first_name || ''} ${user.last_name || ''}`.trim(),\n",
+        "            email: user.email_address || '',\n",
+        "            isActive: user.status === 'active',\n",
+        "            lastLogin: user.last_login_timestamp ? new Date(user.last_login_timestamp) : null\n",
+        "        }));\n",
+        "}"
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## 7. Interview Preparation Strategy\n",
+        "\n",
+        "### Graduate/Entry-Level Appropriate Difficulty\n",
+        "\n",
+        "Graduate program interviews calibrate difficulty to assess **fundamental competency without requiring extensive experience**:\n",
+        "\n",
+        "- **LeetCode Range**: Easy to Medium problems\n",
+        "- **JavaScript Focus**: Fundamentals over frameworks\n",
+        "- **TypeScript Focus**: Core type system concepts\n",
+        "- **Problem-solving approach**: More important than perfect solutions\n",
+        "- **Time Complexity**: Basic Big O understanding (O(1), O(n), O(n²))\n",
+        "\n",
+        "### Key Success Factors\n",
+        "\n",
+        "1. **Explain every code example aloud** during study\n",
+        "2. **Focus on practical understanding** over memorization  \n",
+        "3. **Practice common patterns** until they become second nature\n",
+        "4. **Be ready to discuss trade-offs** and alternative approaches\n",
+        "\n",
+        "### Study Sequence (5-Day Plan)\n",
+        "\n",
+        "1. **Days 1-2**: JavaScript Fundamentals → Data Manipulation\n",
+        "2. **Day 3**: Algorithms & Logic (Most critical for interviews)\n",
+        "3. **Day 4**: Async & Advanced Concepts\n",
+        "4. **Day 5**: TypeScript Fundamentals → Interfaces & OOP\n",
+        "5. **Final preparation**: Review & Practice Explaining Code\n",
+        "\n",
+        "### Immediate Focus Areas\n",
+        "\n",
+        "1. **Code Explanation Skills** - Practice describing what code does in plain English\n",
+        "2. **TypeScript Fundamentals** - Ensure solid understanding of basic type system\n",
+        "3. **Common Patterns** - Array methods, object manipulation, async operations\n",
+        "4. **Edge Cases** - null/undefined handling, type coercion scenarios"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## 8. Practice Exercises\n",
+        "\n",
+        "### Exercise 1: Debug the Code"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Find the bug in this function\n",
+        "function findMax(numbers) {\n",
+        "    let max = 0; // Bug: What if all numbers are negative?\n",
+        "    for (let i = 0; i < numbers.length; i++) {\n",
+        "        if (numbers[i] > max) {\n",
+        "            max = numbers[i];\n",
+        "        }\n",
+        "    }\n",
+        "    return max;\n",
+        "}\n",
+        "\n",
+        "// Test cases\n",
+        "console.log(findMax([1, 5, 3, 9, 2])); // Should be 9\n",
+        "console.log(findMax([-1, -5, -3, -9, -2])); // Should be -1, but returns 0\n",
+        "\n",
+        "// Fixed version\n",
+        "function findMaxFixed(numbers) {\n",
+        "    if (numbers.length === 0) return undefined;\n",
+        "    \n",
+        "    let max = numbers[0]; // Initialize with first element\n",
+        "    for (let i = 1; i < numbers.length; i++) {\n",
+        "        if (numbers[i] > max) {\n",
+        "            max = numbers[i];\n",
+        "        }\n",
+        "    }\n",
+        "    return max;\n",
+        "}\n",
+        "\n",
+        "// Alternative using Math.max\n",
+        "function findMaxBuiltIn(numbers) {\n",
+        "    return numbers.length === 0 ? undefined : Math.max(...numbers);\n",
+        "}"
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Exercise 2: TypeScript Interface Design"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Design interfaces for a simple e-commerce system\n",
+        "\n",
+        "interface Product {\n",
+        "    id: string;\n",
+        "    name: string;\n",
+        "    price: number;\n",
+        "    category: string;\n",
+        "    inStock: boolean;\n",
+        "    description?: string; // Optional property\n",
+        "}\n",
+        "\n",
+        "interface CartItem {\n",
+        "    product: Product;\n",
+        "    quantity: number;\n",
+        "}\n",
+        "\n",
+        "interface ShoppingCart {\n",
+        "    items: CartItem[];\n",
+        "    total: number;\n",
+        "    addItem(product: Product, quantity: number): void;\n",
+        "    removeItem(productId: string): void;\n",
+        "    calculateTotal(): number;\n",
+        "}\n",
+        "\n",
+        "// Implementation\n",
+        "class Cart implements ShoppingCart {\n",
+        "    items: CartItem[] = [];\n",
+        "    total: number = 0;\n",
+        "    \n",
+        "    addItem(product: Product, quantity: number): void {\n",
+        "        const existingItem = this.items.find(item => item.product.id === product.id);\n",
+        "        \n",
+        "        if (existingItem) {\n",
+        "            existingItem.quantity += quantity;\n",
+        "        } else {\n",
+        "            this.items.push({ product, quantity });\n",
+        "        }\n",
+        "        \n",
+        "        this.total = this.calculateTotal();\n",
+        "    }\n",
+        "    \n",
+        "    removeItem(productId: string): void {\n",
+        "        this.items = this.items.filter(item => item.product.id !== productId);\n",
+        "        this.total = this.calculateTotal();\n",
+        "    }\n",
+        "    \n",
+        "    calculateTotal(): number {\n",
+        "        return this.items.reduce((sum, item) => {\n",
+        "            return sum + (item.product.price * item.quantity);\n",
+        "        }, 0);\n",
+        "    }\n",
+        "}"
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Exercise 3: Async/Await Pattern"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Implement a function that fetches multiple APIs concurrently\n",
+        "async function fetchUserProfile(userId: string) {\n",
+        "    try {\n",
+        "        // Fetch user data, posts, and followers concurrently\n",
+        "        const [userData, userPosts, userFollowers] = await Promise.all([\n",
+        "            fetch(`/api/users/${userId}`).then(res => res.json()),\n",
+        "            fetch(`/api/users/${userId}/posts`).then(res => res.json()),\n",
+        "            fetch(`/api/users/${userId}/followers`).then(res => res.json())\n",
+        "        ]);\n",
+        "        \n",
+        "        return {\n",
+        "            user: userData,\n",
+        "            posts: userPosts,\n",
+        "            followerCount: userFollowers.length\n",
+        "        };\n",
+        "    } catch (error) {\n",
+        "        console.error('Error fetching user profile:', error);\n",
+        "        throw new Error('Failed to load user profile');\n",
+        "    }\n",
+        "}\n",
+        "\n",
+        "// Enhanced version with partial failure handling\n",
+        "async function fetchUserProfileRobust(userId: string) {\n",
+        "    const [userResult, postsResult, followersResult] = await Promise.allSettled([\n",
+        "        fetch(`/api/users/${userId}`).then(res => res.json()),\n",
+        "        fetch(`/api/users/${userId}/posts`).then(res => res.json()),\n",
+        "        fetch(`/api/users/${userId}/followers`).then(res => res.json())\n",
+        "    ]);\n",
+        "    \n",
+        "    return {\n",
+        "        user: userResult.status === 'fulfilled' ? userResult.value : null,\n",
+        "        posts: postsResult.status === 'fulfilled' ? postsResult.value : [],\n",
+        "        followerCount: followersResult.status === 'fulfilled' ? followersResult.value.length : 0,\n",
+        "        errors: [\n",
+        "            userResult.status === 'rejected' ? 'Failed to load user data' : null,\n",
+        "            postsResult.status === 'rejected' ? 'Failed to load posts' : null,\n",
+        "            followersResult.status === 'rejected' ? 'Failed to load followers' : null\n",
+        "        ].filter(Boolean)\n",
+        "    };\n",
+        "}"
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Exercise 4: Array Method Chaining"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "source": [
+        "// Process employee data using method chaining\n",
+        "const employees = [\n",
+        "    { name: \"Alice\", department: \"Engineering\", salary: 90000, experience: 5 },\n",
+        "    { name: \"Bob\", department: \"Marketing\", salary: 60000, experience: 3 },\n",
+        "    { name: \"Charlie\", department: \"Engineering\", salary: 85000, experience: 4 },\n",
+        "    { name: \"Diana\", department: \"Sales\", salary: 70000, experience: 6 },\n",
+        "    { name: \"Eve\", department: \"Engineering\", salary: 95000, experience: 7 }\n",
+        "];\n",
+        "\n",
+        "// Find average salary of engineering employees with 4+ years experience\n",
+        "const avgEngineeringSalary = employees\n",
+        "    .filter(emp => emp.department === \"Engineering\")\n",
+        "    .filter(emp => emp.experience >= 4)\n",
+        "    .map(emp => emp.salary)\n",
+        "    .reduce((sum, salary, _, arr) => sum + salary / arr.length, 0);\n",
+        "\n",
+        "console.log(`Average Engineering Salary (4+ years): ${avgEngineeringSalary}`);\n",
+        "\n",
+        "// Group employees by department and calculate statistics\n",
+        "function analyzeEmployeesByDepartment(employees) {\n",
+        "    return employees.reduce((acc, emp) => {\n",
+        "        const dept = emp.department;\n",
+        "        \n",
+        "        if (!acc[dept]) {\n",
+        "            acc[dept] = {\n",
+        "                count: 0,\n",
+        "                totalSalary: 0,\n",
+        "                avgSalary: 0,\n",
+        "                employees: []\n",
+        "            };\n",
+        "        }\n",
+        "        \n",
+        "        acc[dept].count++;\n",
+        "        acc[dept].totalSalary += emp.salary;\n",
+        "        acc[dept].avgSalary = acc[dept].totalSalary / acc[dept].count;\n",
+        "        acc[dept].employees.push(emp.name);\n",
+        "        \n",
+        "        return acc;\n",
+        "    }, {});\n",
+        "}\n",
+        "\n",
+        "console.log(analyzeEmployeesByDepartment(employees));"
+      ],
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## 9. Conclusion\n",
+        "\n",
+        "JavaScript and TypeScript interviews for graduate software engineering programs have evolved to emphasize **practical understanding over algorithmic complexity**. The 15-minute code interpretation format efficiently assesses:\n",
+        "\n",
+        "- **Fundamental competency**\n",
+        "- **Communication skills** \n",
+        "- **Systematic problem-solving approaches**\n",
+        "\n",
+        "These skills predict success in professional development environments.\n",
+        "\n",
+        "### Key Takeaways for Success\n",
+        "\n",
+        "1. **Master Core Concepts**: Focus on JavaScript gotchas, TypeScript type system basics, and async programming patterns\n",
+        "2. **Practice Clear Communication**: Explain your thought process step by step\n",
+        "3. **Demonstrate Adaptability**: Show how you incorporate feedback and consider alternative approaches\n",
+        "4. **Focus on Practical Skills**: Emphasize real-world problem-solving over theoretical computer science\n",
+        "\n",
+        "### Enterprise Focus\n",
+        "\n",
+        "Enterprise companies like EPI-USE and similar SAP partners seek candidates who can:\n",
+        "- Bridge technical implementation with business requirements\n",
+        "- Combine solid JavaScript foundations with TypeScript's type safety benefits\n",
+        "- Grow effectively within professional development teams\n",
+        "\n",
+        "### Final Recommendations\n",
+        "\n",
+        "The shift toward practical, understanding-based assessment reflects industry recognition that **new graduates need immediately applicable skills and strong fundamentals**. Success depends on:\n",
+        "\n",
+        "- Mastering core concepts rather than memorizing complex algorithms\n",
+        "- Practicing clear communication and systematic thinking\n",
+        "- Demonstrating adaptability to feedback and collaborative problem-solving\n",
+        "\n",
+        "Candidates who focus on the areas covered in this notebook will find themselves well-prepared for graduate program technical assessments.\n",
+        "\n",
+        "---\n",
+        "\n",
+        "*This notebook covers everything needed for JavaScript/TypeScript interviews, with particular strength in the areas most commonly tested by technical recruiters and engineering teams.*"
+      ]
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "display_name": "JavaScript (Node.js)",
+      "language": "javascript",
+      "name": "javascript"
+    },
+    "language_info": {
+      "file_extension": ".js",
+      "mimetype": "application/javascript",
+      "name": "javascript",
+      "version": "16.14.0"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 4
+}
